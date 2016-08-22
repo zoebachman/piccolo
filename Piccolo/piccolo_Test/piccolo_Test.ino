@@ -275,7 +275,18 @@ void loop() {
 
     if (peak[x] <= 0) { // Empty column?
       //strip.drawLine(x, 0, x, 7, LED_OFF);
-      colorWipe(strip.Color(0, 255, 0), 50); // Green
+      //colorWipe(strip.Color(0, 0, 0), 255); // Green
+
+
+          for (int i = 0; i < NUMPIXELS; i++) {
+      if ( i == 0 || i == 1 || i == 2 || i == 3) {
+
+        // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+        stripLeft.setPixelColor(i, stripLeft.Color(255, 255, 0)); // yellow
+
+
+
+        stripLeft.show();
       continue;
     } else if (c < 8) { // Partial column?
       //strip.drawLine(x, 0, x, 7 - c, LED_OFF);
