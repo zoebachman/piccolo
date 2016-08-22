@@ -30,7 +30,7 @@ ffft library is provided under its own terms -- see ffft.S for specifics.
 
 
 
-analogReference(DEFAULT);
+//analogReference(DEFAULT);
 #include <Adafruit_NeoPixel.h>
 
 
@@ -220,9 +220,14 @@ void loop() {
   }
 
   // Fill background w/colors, then idle parts of columns will erase
-  strip.fillRect(0, 0, 8, 3, LED_RED);    // Upper section
-  strip.fillRect(0, 3, 8, 2, LED_YELLOW); // Mid
-  strip.fillRect(0, 5, 8, 3, LED_GREEN);  // Lower section
+//  strip.fillRect(0, 0, 8, 3, LED_RED);    // Upper section
+//  strip.fillRect(0, 3, 8, 2, LED_YELLOW); // Mid
+//  strip.fillRect(0, 5, 8, 3, LED_GREEN);  // Lower section
+
+ theaterChaseRainbow(50);
+
+
+  
 
   // Downsample spectrum output to 8 columns:
   for (x = 0; x < 8; x++) {
@@ -298,7 +303,7 @@ ISR(ADC_vect) { // Audio-sampling interrupt
   if (++samplePos >= FFT_N) ADCSRA &= ~_BV(ADIE); // Buffer full, interrupt off
 }
 
-
+/////NeoPixel Ring animation
 //Theatre-style crawling lights with rainbow effect
 void theaterChaseRainbow(uint8_t wait) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
