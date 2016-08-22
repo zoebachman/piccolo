@@ -278,20 +278,22 @@ void loop() {
       //colorWipe(strip.Color(0, 0, 0), 255); // Green
 
 
-          for (int i = 0; i < NUMPIXELS; i++) {
+      for (int i = 0; i < N_PIXELS; i++) {
       if ( i == 0 || i == 1 || i == 2 || i == 3) {
 
         // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-        stripLeft.setPixelColor(i, stripLeft.Color(255, 255, 0)); // yellow
+        strip.setPixelColor(i, strip.Color(255, 255, 0)); // yellow
 
 
 
-        stripLeft.show();
+        strip.show();
+        
       continue;
     } else if (c < 8) { // Partial column?
       //strip.drawLine(x, 0, x, 7 - c, LED_OFF);
-      colorWipe(strip.Color(255, 0, 0), 50); // Red
+      colorWipe(strip.Color(0, 255, 0), 50); // Green
     }
+      }
 
     // The 'peak' dot color varies, but doesn't necessarily match
     // the three screen regions...yellow has a little extra influence.
@@ -313,8 +315,8 @@ void loop() {
 
   if (++colCount >= 10) colCount = 0;
 }
-
-ISR(ADC_vect) { // Audio-sampling interrupt
+}
+ ISR(ADC_vect) { // Audio-sampling interrupt
   static const int16_t noiseThreshold = 4;
   int16_t              sample         = ADC; // 0-1023
 
