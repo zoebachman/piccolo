@@ -154,7 +154,7 @@ void setup() {
   memset(col , 0, sizeof(col));
 
   for (i = 0; i < 8; i++) {
-    minLvlAvg[i] = 0;
+    minLvlAvg[i] = 0; //min level...frequency?
     maxLvlAvg[i] = 512;
     data         = (uint8_t *)pgm_read_word(&colData[i]);
     nBins        = pgm_read_byte(&data[0]) + 2;
@@ -169,6 +169,7 @@ void setup() {
 #else
   ADMUX  = ADC_CHANNEL; // Arduino Uno: Channel sel, right-adj, use AREF pin
 #endif
+
 
 #if (ADC_CHANNEL > 7)
   ADMUX  = _BV(REFS0) | (ADC_CHANNEL - 8);
@@ -186,6 +187,9 @@ void setup() {
            _BV(ADPS1) | _BV(ADPS0); // 64:1 / 13 = 9615 Hz
   TIMSK0 = 0;                // Timer0 off
   sei(); // Enable interrupts
+
+
+  
 
 
 
