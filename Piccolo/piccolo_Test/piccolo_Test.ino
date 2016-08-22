@@ -224,8 +224,18 @@ void loop() {
 //  strip.fillRect(0, 3, 8, 2, LED_YELLOW); // Mid
 //  strip.fillRect(0, 5, 8, 3, LED_GREEN);  // Lower section
 
- theaterChaseRainbow(50);
-
+//possible functions to use to illustrate
+//  colorWipe(strip.Color(255, 0, 0), 50); // Red
+//  colorWipe(strip.Color(0, 255, 0), 50); // Green
+//  colorWipe(strip.Color(0, 0, 255), 50); // Blue
+//  // Send a theater pixel chase in...
+//  theaterChase(strip.Color(127, 127, 127), 50); // White
+//  theaterChase(strip.Color(127, 0, 0), 50); // Red
+//  theaterChase(strip.Color(0, 0, 127), 50); // Blue
+//
+//  rainbow(20);
+//  rainbowCycle(20);
+//  theaterChaseRainbow(50);
 
   
 
@@ -264,18 +274,20 @@ void loop() {
     if (c > peak[x]) peak[x] = c; // Keep dot on top
 
     if (peak[x] <= 0) { // Empty column?
-      strip.drawLine(x, 0, x, 7, LED_OFF);
+      //strip.drawLine(x, 0, x, 7, LED_OFF);
+      colorWipe(strip.Color(0, 255, 0), 50); // Green
       continue;
     } else if (c < 8) { // Partial column?
-      strip.drawLine(x, 0, x, 7 - c, LED_OFF);
+      //strip.drawLine(x, 0, x, 7 - c, LED_OFF);
+      colorWipe(strip.Color(255, 0, 0), 50); // Red
     }
 
     // The 'peak' dot color varies, but doesn't necessarily match
     // the three screen regions...yellow has a little extra influence.
     y = 8 - peak[x];
-    if (y < 2)      strip.drawPixel(x, y, LED_RED);
-    else if (y < 6) strip.drawPixel(x, y, LED_YELLOW);
-    else           strip.drawPixel(x, y, LED_GREEN);
+    if (y < 2)      colorWipe(strip.Color(255, 0, 0), 50); // Red
+    else if (y < 6) colorWipe(strip.Color(0, 255, 0), 50); // Green
+    else           colorWipe(strip.Color(0, 0, 255), 50); // Blue
   }
 
   strip.show();
@@ -303,7 +315,62 @@ ISR(ADC_vect) { // Audio-sampling interrupt
   if (++samplePos >= FFT_N) ADCSRA &= ~_BV(ADIE); // Buffer full, interrupt off
 }
 
-/////NeoPixel Ring animation
+
+
+
+/////NeoPixel Ring animations >> from strandtest
+// Fill the dots one after the other with a color
+void colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, c);
+    strip.show();
+    delay(wait);
+  }
+}
+
+void rainbow(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256; j++) {
+    for(i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheel((i+j) & 255));
+    }
+    strip.show();
+    delay(wait);
+  }
+}
+
+// Slightly different, this makes the rainbow equally distributed throughout
+void rainbowCycle(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
+    for(i=0; i< strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
+    }
+    strip.show();
+    delay(wait);
+  }
+}
+
+//Theatre-style crawling lights.
+void theaterChase(uint32_t c, uint8_t wait) {
+  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
+    for (int q=0; q < 3; q++) {
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, c);    //turn every third pixel on
+      }
+      strip.show();
+
+      delay(wait);
+
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, 0);        //turn every third pixel off
+      }
+    }
+  }
+}
+
 //Theatre-style crawling lights with rainbow effect
 void theaterChaseRainbow(uint8_t wait) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
