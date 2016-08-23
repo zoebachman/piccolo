@@ -1,6 +1,10 @@
 piccolo
 =======
 
+A version of the Adafruit Arduino music visualizer, swapping in a Flora microcontroller and an LED strip. 
+
+//Original:
+
 Tiny Arduino music visualizer!
 
 A great demo of the Adafruit Microphone Amp and our Bi-Color LED backpack.
